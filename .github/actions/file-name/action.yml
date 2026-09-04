@@ -4,6 +4,10 @@ inputs:
  ksun:
   description: 'ksun'
   required: true
+ resukisu:
+  description: 'resukisu'
+  required: false
+  default: 'false'
  susfs:
   description: 'susfs'
   required: true
@@ -46,6 +50,7 @@ runs:
      # This gives dynamic file name depending on which features are enabled
      FILE_NAME="${ARTIFACT_BASE}"
      [[ "${{ inputs.ksun }}" == "true" ]] && FILE_NAME="${FILE_NAME}-KSUN${KSU_VERSION}"
+     [[ "${{ inputs.ksun }}" != "true" && "${{ inputs.resukisu }}" == "true" ]] && FILE_NAME="${FILE_NAME}-ReSukiSU"
      [[ "${{ inputs.susfs }}" == "true" ]] && FILE_NAME="${FILE_NAME}-SUSFS"
      [[ "${{ inputs.zeromount }}" == "true" ]] && FILE_NAME="${FILE_NAME}-ZM"
      [[ "${{ inputs.nomount }}" == "true" ]] && FILE_NAME="${FILE_NAME}-NM"
