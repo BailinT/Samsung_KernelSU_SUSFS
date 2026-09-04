@@ -33,6 +33,18 @@ on:
         default: true
         type: boolean
 
+      resukisu:
+        description: "ReSukiSU (replaces KSUN when true)"
+        required: false
+        type: boolean
+        default: false
+
+      models_json:
+        description: "Only build selected models (JSON array, empty = full matrix)"
+        required: false
+        type: string
+        default: ''
+
       susfs:
         description: "SUSFS"
         required: false
@@ -117,6 +129,8 @@ jobs:
       zeromount: ${{ inputs.zeromount }}
       nomount: ${{ inputs.nomount }}
       ksun: ${{ inputs.ksun }}
+      resukisu: ${{ inputs.resukisu }}
+      models_json: ${{ inputs.models_json }}
       droidspace: ${{ inputs.droidspace }}
       ntsync: ${{ inputs.ntsync }}
       bbrv3: ${{ inputs.bbrv3 }}

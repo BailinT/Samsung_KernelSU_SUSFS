@@ -210,6 +210,11 @@ jobs:
         uses: ./.github/actions/ksun
         with:
           susfs: ${{ inputs.susfs }}
+      - name: Add ReSukiSU
+        if: inputs.resukisu == 'true'
+        uses: ./.github/actions/resukisu
+        with:
+          susfs: ${{ inputs.susfs }}
         
       - name: Add SUSFS
         if: inputs.susfs == 'true'

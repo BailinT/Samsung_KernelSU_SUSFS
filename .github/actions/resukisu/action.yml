@@ -1,0 +1,20 @@
+name: Set up ReSukiSU
+description: download and set up ReSukiSU (SukiSU-Ultra fork with native SUSFS) into the kernel source
+inputs:
+ susfs:
+  description: 'susfs'
+  required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup ReSukiSU (native SUSFS in main branch)
+      shell: bash
+      run: |
+        cd "$COMMON"
+        curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+
+    - name: enable KSU in defconfig
+      shell: bash
+      run: |
+        "$COMMON/scripts/config" --file "$GKI_DEFCONFIG" --enable CONFIG_KSU
