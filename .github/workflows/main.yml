@@ -27,95 +27,76 @@ on:
           - full
         default: default
 
-      ksun:
-        description: "KSUN"
-        required: false
-        default: true
-        type: boolean
-
-      resukisu:
-        description: "ReSukiSU (replaces KSUN when true)"
-        required: false
-        type: boolean
-        default: false
-
       models_json:
-        description: "Only build selected models (JSON array, empty = full matrix)"
+        description: "Only build selected models (JSON array like [{\"branch\":\"SM-S928B-Oneui8\",\"build_type\":\"Bazel\"}]; empty = full matrix)"
         required: false
         type: string
         default: ''
 
+      ksu:
+        description: "Root solution"
+        required: true
+        type: choice
+        options:
+          - resukisu
+          - ksun
+          - none
+        default: resukisu
+
       susfs:
         description: "SUSFS"
-        required: false
-        type: boolean
-        default: true
-
-      zeromount:
-        description: "Zeromount"
-        required: false
-        type: boolean
-        default: false
-
-      nomount:
-        description: "NoMount"
-        required: false
-        type: boolean
-        default: true
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
       bbg:
-        description: "BBG"
-        required: false
-        type: boolean
-        default: true
-
-      unicodefix:
-        description: "Unicode fix"
-        required: false
-        type: boolean
-        default: true
+        description: "Baseband Guard"
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
       droidspace:
-        description: "Droidspaces"
-        required: false
-        type: boolean
-        default: true
+        description: "DroidSpaces"
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
       ntsync:
-        description: "NTsync"
-        required: false
-        type: boolean
-        default: true
-        
-      bbrv3:
-        description: "bbrv3"
-        required: false
-        type: boolean
-        default: true
-
-      cache:
-        description: "CCache"
-        required: false
-        default: true
-        type: boolean
-
-      ipv6_nat:
-       description: "IPv6_NAT & IP-SET"
-       required: false
-       default: true
-       type: boolean
+        description: "NTSync"
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
       optimization:
-       description: "optimization patches"
-       required: false
-       default: true
-       type: boolean
+        description: "Optimization patches"
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
       ttl:
-       description: "TTL support"
-       required: false
-       default: true
-       type: boolean
+        description: "TTL patches"
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
+
 
 jobs:
 
@@ -124,21 +105,21 @@ jobs:
     secrets: inherit
     with:
       susfs: ${{ inputs.susfs }}
+      resukisu: ${{ inputs.ksu == 'resukisu' && 'true' || 'false' }}
+      ksun: ${{ inputs.ksu == 'ksun' && 'true' || 'false' }}
       bbg: ${{ inputs.bbg }}
-      unicodefix: ${{ inputs.unicodefix }}
-      zeromount: ${{ inputs.zeromount }}
-      nomount: ${{ inputs.nomount }}
-      ksun: ${{ inputs.ksun }}
-      resukisu: ${{ inputs.resukisu }}
-      models_json: ${{ inputs.models_json }}
+      unicodefix: 'true'
+      zeromount: 'false'
+      nomount: 'true'
       droidspace: ${{ inputs.droidspace }}
       ntsync: ${{ inputs.ntsync }}
-      bbrv3: ${{ inputs.bbrv3 }}
-      cache: ${{ inputs.cache }}
-      ipv6_nat: ${{ inputs.ipv6_nat }}
+      bbrv3: 'true'
+      cache: 'true'
+      ipv6_nat: 'true'
       optimization: ${{ inputs.optimization }}
       ttl: ${{ inputs.ttl }}
       lto: ${{ inputs.lto }}
+      models_json: ${{ inputs.models_json }}
 
   release:
     runs-on: ubuntu-latest
