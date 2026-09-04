@@ -97,6 +97,14 @@ runs:
          fi
      fi
 
+  - name: BailinT signature
+    shell: bash
+    run: |
+     if [ -f "$ANYKERNEL3/anykernel.sh" ]; then
+       sed -i 's/^kernel.string=.*/kernel.string=Samsung GKI ReSukiSU-SUSFS By 抖音王德发刷机/' "$ANYKERNEL3/anykernel.sh"
+       echo "[+] kernel.string 署名已写入"
+     fi
+
   - name: check IKCONFIG
     shell: bash
     run: |
