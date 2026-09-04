@@ -14,6 +14,18 @@ runs:
         cd "$COMMON"
         curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
 
+    - name: Point KSU_SRC at the real tree (bazel sandbox drops .git)
+      shell: bash
+      run: |
+        set -e
+        KBUILD="$COMMON/KernelSU/kernel/Kbuild"
+        if [ -f "$KBUILD" ] && grep -q '^KSU_SRC :=' "$KBUILD"; then
+          sed -i "s|^KSU_SRC := .*|KSU_SRC := $COMMON/KernelSU/kernel|" "$KBUILD"
+          echo "[+] KSU_SRC pinned to $COMMON/KernelSU/kernel (Kbuild's own hint for bazel builds: sandbox does not carry .git)"
+        else
+          echo "[-] $KBUILD missing or no KSU_SRC line; skipped"
+        fi
+
     - name: enable KSU in defconfig
       shell: bash
       run: |
