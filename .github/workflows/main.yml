@@ -108,14 +108,14 @@ jobs:
       resukisu: ${{ inputs.ksu == 'resukisu' && 'true' || 'false' }}
       ksun: ${{ inputs.ksu == 'ksun' && 'true' || 'false' }}
       bbg: ${{ inputs.bbg }}
-      unicodefix: true
-      zeromount: false
-      nomount: true
+      unicodefix: 'true'
+      zeromount: 'false'
+      nomount: 'true'
       droidspace: ${{ inputs.droidspace }}
       ntsync: ${{ inputs.ntsync }}
-      bbrv3: true
-      cache: true
-      ipv6_nat: true
+      bbrv3: 'true'
+      cache: 'true'
+      ipv6_nat: 'true'
       optimization: ${{ inputs.optimization }}
       ttl: ${{ inputs.ttl }}
       lto: ${{ inputs.lto }}

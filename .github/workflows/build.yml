@@ -30,6 +30,10 @@ on:
       ksun:
         required: true
         type: string
+      resukisu:
+        required: false
+        type: string
+        default: 'false'
       droidspace:
         required: true
         type: string
