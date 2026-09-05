@@ -38,27 +38,39 @@ runs:
          target_config="$GKI_DEFCONFIG"
      fi
      
-     # 2. Apply the nuke modifications exactly once if a target file was assigned
+     # 2. Apply the nuke modifications
+     nuke_list=()
      if [ -n "$target_config" ]; then
-      echo "Nuking Samsung Knox/Root protection in: $target_config"
+       nuke_list+=("$target_config")
+     fi
 
-     
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_UH
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_UH_RKP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_UH_LKMAUTH
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_UH_LKM_BLOCK
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_RKP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_RKP_CFP_JOPP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_RKP_CFP_ROPP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_RKP_CFP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_SECURITY_DEFEX
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_PROCA
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_FIVE
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_KDP
-     "$COMMON/scripts/config" --file "$target_config" --disable CONFIG_KDP_NS
-     #"$COMMON/scripts/config" --file "$target_config" --disable CONFIG_KNOX
-     #"$COMMON/scripts/config" --file "$target_config" --disable CONFIG_KNOX_NCM
-     #"$COMMON/scripts/config" --file "$target_config" --disable CONFIG_KNOX_KAP
+     # MTK-style mgk trees (e.g. SM-X926B) merge a mediatek-bazel_defconfig
+     # fragment on top of gki_defconfig that RE-ENABLES UH/RKP/KDP/DEFEX/PROCA/FIVE;
+     # nuke every such fragment or ReSukiSU's kernel_compat.h hard-errors.
+     for frag in $CONFIG/kernel_device_modules-*/arch/arm64/configs/mediatek-bazel_defconfig; do
+       [ -f "$frag" ] && nuke_list+=("$frag")
+     done
+
+     for tc in "${nuke_list[@]}"; do
+      echo "Nuking Samsung Knox/Root protection in: $tc"
+
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_UH
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_UH_RKP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_UH_LKMAUTH
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_UH_LKM_BLOCK
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_RKP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_RKP_CFP_JOPP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_RKP_CFP_ROPP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_RKP_CFP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_SECURITY_DEFEX
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_PROCA
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_FIVE
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_KDP
+     "$COMMON/scripts/config" --file "$tc" --disable CONFIG_KDP_NS
+     #"$COMMON/scripts/config" --file "$tc" --disable CONFIG_KNOX
+     #"$COMMON/scripts/config" --file "$tc" --disable CONFIG_KNOX_NCM
+     #"$COMMON/scripts/config" --file "$tc" --disable CONFIG_KNOX_KAP
+     done
      fi
 
   - name: remove check_defconfig
