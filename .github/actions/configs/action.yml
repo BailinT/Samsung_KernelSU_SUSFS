@@ -71,7 +71,6 @@ runs:
      #"$COMMON/scripts/config" --file "$tc" --disable CONFIG_KNOX_NCM
      #"$COMMON/scripts/config" --file "$tc" --disable CONFIG_KNOX_KAP
      done
-     fi
 
   - name: remove check_defconfig
     shell: bash
