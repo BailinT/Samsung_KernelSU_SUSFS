@@ -47,7 +47,7 @@ runs:
      # MTK-style mgk trees (e.g. SM-X926B) merge a mediatek-bazel_defconfig
      # fragment on top of gki_defconfig that RE-ENABLES UH/RKP/KDP/DEFEX/PROCA/FIVE;
      # nuke every such fragment or ReSukiSU's kernel_compat.h hard-errors.
-     for frag in $CONFIG/kernel_device_modules-*/arch/arm64/configs/mediatek-bazel_defconfig; do
+     for frag in $CONFIG/kernel/kernel_device_modules-*/arch/arm64/configs/mediatek-bazel_defconfig; do
        [ -f "$frag" ] && nuke_list+=("$frag")
      done
 
